@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Stock Price Prediction</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+
+  <img src="{{url_for('predict')}}" alt="">
+		google.charts.load('current', {'packages':['corechart']});
+		google.charts.setOnLoadCallback(drawChart);
+		function drawChart() {
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', 'Date');
+			data.addColumn('number', 'Actual Price');
+			data.addColumn('number', 'Predicted Price');
+			data.addRows([
+				{% for date, actual, predicted in data %}
+					['{{ date }}', {{ actual }}, {{ predicted }}],
+				{% endfor %}
+			]);
+
+			var options = {
+				title: 'Stock Price Prediction',
+				legend: { position: 'bottom' },
+				width: 900,
+				height: 500
+			};
+
+			var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+			chart.draw(data, options);
+		}
+	</script>
+
+	<style>
+		.container {
+			margin-top: 100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Stock Price Prediction</h1>
+		<!-- <h3>{{ ticker }} - {{ data|length }} Days Prediction</h3> -->
+		<!-- <div id="chart_div"></div> -->
+    <h4>Closing price vs time Chart</h4>
+    <img src="data:image/png;base64,{{ plot_url1 }}" />
+    <h4>Closing Price vs Time chart with 100 MovingAverage</h4>
+    <img src="data:image/png;base64,{{ plot_url2 }}" />
+    <h4>Predictions vs Orignal</h4>
+    <img src="data:image/png;base64,{{ plot_url3 }}" />
+
+
+
+		<br>
+		<a href="{{ url_for('index') }}" class="btn btn-primary">Predict Another Stock</a>
+	</div>
+</body>
+</html>

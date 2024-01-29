@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Stock Trend Prediction</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f7f7f7;
+		}
+		h1, h2, h3 {
+			margin: 0;
+			padding: 0;
+		}
+		h1 {
+			font-size: 36px;
+			font-weight: bold;
+			text-align: center;
+			margin: 50px 0;
+		}
+		h2 {
+			font-size: 24px;
+			font-weight: bold;
+			margin: 20px 0;
+		}
+		h3 {
+			font-size: 18px;
+			font-weight: bold;
+			margin: 10px 0;
+		}
+		p {
+			margin: 10px 0;
+		}
+		table {
+			border-collapse: collapse;
+			margin: 20px 0;
+		}
+		table th, table td {
+			border: 1px solid #ddd;
+			padding: 8px;
+		}
+		table th {
+			background-color: #f2f2f2;
+			font-weight: bold;
+			text-align: left;
+		}
+		form {
+			margin: 20px 0;
+		}
+		label {
+			display: block;
+			margin-bottom: 10px;
+		}
+		input[type="text"] {
+			padding: 8px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			width: 200px;
+			margin-bottom: 10px;
+		}
+		input[type="submit"] {
+			background-color: #4CAF50;
+			color: white;
+			padding: 8px 16px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		input[type="submit"]:hover {
+			background-color: #3e8e41;
+		}
+		.chart {
+			max-width: 800px;
+			margin: 0 auto;
+		}
+		.chart canvas {
+			width: 100% !important;
+			height: auto !important;
+		}
+	</style>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+	<h1>Stock Trend Prediction</h1>
+	<form method="post">
+		<label for="ticker">Enter Stock Ticker:</label>
+		<input type="text" id="ticker" name="ticker" value="{{ticker}}">
+		<input type="submit" value="Get Data">
+	</form>
+	{% if data %}
+		<h2>Data from {{start_date}} to {{end_date}}</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Open</th>
+					<th>High</th>
+					<th>Low</th>
+					<th>Close</th>
+					<th>Adj Close</th>
+					<th>Volume</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for row in data %}
+					<tr>
+						<td>{{row[0]}}</td>
+						<td>{{row[1]}}</td>
+						<td>{{row[2]}}</td>
+						<td>{{row[3]}}</td>
+						<td>{{row[4]}}</td>
+						<td>{{row[5]}}</td>
+						<td>{{row[6]}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<h2>Stock Price Chart</h2>
+<div class="chart" id="chart"></div>
+<script>
+var dates = {{dates|safe}};
+var prices = {{prices|safe}};
+var trace1 = {
+type: "scatter",
+mode: "lines",
+x: dates,
+y: prices,
+line: {
+color: "#17BECF"
+}
+};
+var data = [trace1];
+var layout = {
+title: "{{ticker}} Stock Price",
+xaxis: {
+title: "Date",
+showgrid: true,
+zeroline: false
+},
+yaxis: {
+title: "Price",
+showline: false
+}
+};
+Plotly.newPlot("chart", data, layout);
+</script>
+{% endif %}
+
+</body>
+</html>

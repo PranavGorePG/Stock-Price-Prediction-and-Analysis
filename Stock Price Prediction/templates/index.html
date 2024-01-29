@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Stock Price Prediction</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<style>
+		.container {
+			margin-top: 100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Stock Price Prediction</h1>
+		<form action="{{ url_for('predict') }}" method="POST">
+			<div class="form-group">
+				<label for="ticker">Enter Stock Ticker Symbol:</label>
+				<input type="text" class="form-control" id="ticker" name="ticker" required>
+			</div>
+			<button type="submit" class="btn btn-primary">Predict</button>
+		</form>
+	</div>
+</body>
+</html>
